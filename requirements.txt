@@ -6,3 +6,4 @@ google-generativeai
 langchain-anthropic
 python-dotenv
 pydantic
+wikipedia

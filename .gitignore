@@ -55,3 +55,6 @@ desktop.ini
 *.swp
 *.tmp
 *.old
+
+# File test
+test.py
