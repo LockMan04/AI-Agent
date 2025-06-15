@@ -1,8 +1,8 @@
-langchain
 wikipedia
 langchain-community
 langchain-openai
 google-genai
+google-generativeai
 langchain-anthropic
 python-dotenv
 pydantic
