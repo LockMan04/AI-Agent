@@ -1,0 +1,57 @@
+# Thông tin nhạy cảm
+*.env
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*.cert
+*.secret
+*.token
+
+# Thông tin cấu hình cá nhân
+*.local
+*.user
+*.suo
+*.vscode/settings.json
+
+# Thư mục và file ảo hóa môi trường Python
+venv/
+env/
+.venv/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+
+# Thư mục và file build, cache
+node_modules/
+dist/
+build/
+out/
+.cache/
+tmp/
+temp/
+
+# File log
+*.log
+
+# File hệ điều hành
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# File IDE
+.idea/
+.vscode/
+*.iml
+
+# File backup
+*.bak
+*.swp
+*.tmp
+*.old

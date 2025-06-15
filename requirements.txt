@@ -1,0 +1,8 @@
+langchain
+wikipedia
+langchain-community
+langchain-openai
+google-genai
+langchain-anthropic
+python-dotenv
+pydantic
