@@ -1,33 +1,60 @@
-import json
 from dotenv import load_dotenv
-from tools import call_gemini
+from pydantic import BaseModel
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import PydanticOutputParser
+from langchain.agents import create_tool_calling_agent, AgentExecutor
+from tools import save_tool, wiki_tool
 
 load_dotenv()
 
-# Định nghĩa logic cho Agent
-def qa_agent(user_query):
-  tools_prompt = f"""
-    Bạn là một trợ lý AI có khả năng trả lời các câu hỏi, tìm kiếm thông tin trên web và ghi/đọc thông tin từ bộ nhớ
-
-    Người dùng đưa ra yêu cầu: "{user_query}"
-
-    Dựa vào yêu cầu này, hãy quyết định hành động tiếp theo:
-    1. Nếu câu hỏi yêu cầu tìm kiếm thông tin (Ví dụ: Thủ đô Việt Nam?, Sương mù là gì?, ...), hãy chỉ trả lời duy nhất một dòng với format: `TOOL_CALL: search_google("Câu hỏi tìm kiếm")`
-    2. Nếu người dùng muốn lưu thông tin (Ví dụ: Tên của tôi là Toàn, Tôi là một sinh viên Nguyễn Tất Thành, ...), hãy chỉ trả lời duy nhất một dòng với format: `TOOL_CALL: save_info("Key", "Thông tin cần lưu")`
-    3. Nếu người dùng muốn đọc thông tin từ bộ nhớ (Ví dụ: Tên tôi là gì?, Tôi là sinh viên nào?, ...), hãy chỉ trả lời duy nhất một dòng với format: `TOOL_CALL: load_info("Key")`
-    4. Nếu câu hỏi có thể trả lời trực tiếp bằng kiến thức chung của bạn, hoặc không thuộc các loại trên, hãy trả lời duy nhất một dòng với format: `ANSWER: Câu trả lời của bạn`
-  """
-  decision = call_gemini(tools_prompt)
-  print(f'Gemini quyết định: {decision}')
+class ResearchResponse(BaseModel):
+    topic: str
+    summary: str
+    sources: list[str]
+    tools_used: list[str]
+    
   
-  
-# Chat với gemini
-print('--- Chào một ngày tốt lành, Mimi có thể giúp gì cho bạn? ---')
-print('Bạn có thể hỏi bất cứ điều gì, yêu cầu tìm kiếm, hoặc lưu/đọc thông tin.')
-print('Gõ "exit" để thoát.')
-while True:
-    user_query = input('Bạn: ')
-    if user_query.lower() == 'exit': # Dùng .lower() cho chuẩn
-        print('Mimi tạm biệt bạn! Hẹn gặp lại :)))')
-        break
-    qa_agent(user_query)
+llm = ChatOpenAI(model_name="gpt-4o-mini")
+parser = PydanticOutputParser(pydantic_object=ResearchResponse)
+
+prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            """
+            Bạn là một trợ lý nghiên cứu sẽ giúp tạo ra một bài nghiên cứu.
+            
+            QUAN TRỌNG - Cách sử dụng tools:
+            - save_info: Cần 1 tham số key và value. Ví dụ: save_info(name="Toàn)
+            - load_info: Cần 1 tham số key. Ví dụ: load_info(key="name")  
+            - list_user_info: Không cần tham số. Ví dụ: list_info()
+            
+            Trả lời truy vấn của người dùng và sử dụng các công cụ cần thiết.
+            Gói đầu ra ở định dạng này và không cung cấp văn bản nào khác\n{format_instructions}
+            """,
+        ),
+        ("placeholder", "{chat_history}"),
+        ("human", "{query}"),
+        ("placeholder", "{agent_scratchpad}"),
+    ]
+).partial(format_instructions=parser.get_format_instructions())
+
+tools = [wiki_tool, save_tool]
+agent = create_tool_calling_agent(
+    llm=llm,
+    prompt=prompt,
+    tools=tools
+)
+
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+query = input("What can i help you research? ")
+raw_response = agent_executor.invoke({"query": query})
+print(raw_response)
+
+
+try:
+    structured_response = parser.parse(raw_response.get("output")[0]["text"])
+    print(structured_response)
+except Exception as e:
+    print("Error parsing response", e, "Raw Response - ", raw_response)
