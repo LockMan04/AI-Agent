@@ -1,5 +1,12 @@
-# Thông tin nhạy cảm
+# ==================================================
+# AI AGENT MEETING SCHEDULER - GITIGNORE
+# ==================================================
+
+# ================== BẢO MẬT & API ==================
 *.env
+.env
+.env.local
+.env.production
 *.key
 *.pem
 *.crt
@@ -7,15 +14,24 @@
 *.pfx
 *.cert
 *.secret
-*.token
+
+# Google API credentials và tokens
+credentials.json
+token.json
+service-account.json
+client_secret*.json
+
+# OpenAI và API keys
+openai.key
+serper.key
 
 # Thông tin cấu hình cá nhân
 *.local
 *.user
 *.suo
-*.vscode/settings.json
+.vscode/settings.json
 
-# Thư mục và file ảo hóa môi trường Python
+# ================== PYTHON & STREAMLIT ==================
 venv/
 env/
 .venv/
@@ -25,9 +41,16 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Streamlit cache
+.streamlit/
 
 
-# Thư mục và file build, cache
+# ================== PROJECT SPECIFIC ==================
 node_modules/
 dist/
 build/
@@ -36,8 +59,20 @@ out/
 tmp/
 temp/
 
+# Meeting reports và backup files
+reports/
+contacts_backup.json
+*_backup.*
+meeting_prep_*.md
+
+# CrewAI cache
+.crewai/
+
+# ================== SYSTEM & IDE ==================
 # File log
 *.log
+debug.log
+error.log
 
 # File hệ điều hành
 .DS_Store
@@ -49,12 +84,46 @@ desktop.ini
 .idea/
 .vscode/
 *.iml
+.vscode/launch.json
 
+# ================== BACKUP & TEMP ==================
 # File backup
 *.bak
 *.swp
 *.tmp
 *.old
+*~
+.#*
 
-# File test
+# File test và development
 test.py
+debug.py
+playground.py
+scratch/
+
+# ================== AI/ML & DATA ==================
+*.db
+*.sqlite
+*.sqlite3
+models/
+checkpoints/
+weights/
+*.pkl
+*.joblib
+*.h5
+*.model
+
+# Data files
+data/
+datasets/
+*.csv
+*.json
+*.xlsx
+*.parquet
+
+# ================== SECURITY NOTE ==================
+# ⚠️  QUAN TRỌNG: Không commit các file sau đây:
+# - credentials.json (Google API credentials)
+# - token.json (Google OAuth tokens)
+# - .env (API keys: OPENAI_API_KEY, SERPER_API_KEY)
+# - reports/ (có thể chứa thông tin nhạy cảm của cuộc họp)
