@@ -185,15 +185,13 @@ def display_sidebar_instructions():
 
 
 def display_crew_progress(crew, meeting_data):
-    """Hiển thị tiến trình crew với animation chuyên nghiệp"""
+    """Hiển thị tiến trình crew với animation thực tế hơn"""
     company_name = meeting_data.get('company_name', 'Unknown')
     
     # Container cho progress
     progress_container = st.container()
     
     with progress_container:
-        st.markdown("### 🚀 Tiến trình chuẩn bị cuộc họp")
-        
         # Progress bar tổng
         main_progress = st.progress(0)
         main_status = st.empty()
@@ -225,52 +223,104 @@ def display_crew_progress(crew, meeting_data):
             agents_progress['executive'] = st.progress(0)
     
     try:
-        # Phase 1: Context Analysis (0-25%)
+        # Các message động cho từng phase
+        context_messages = [
+            "🔍 Bắt đầu tìm kiếm thông tin...",
+            "🏢 Đang phân tích thông tin công ty...",
+            "📰 Thu thập tin tức và báo cáo gần đây...",
+            "👥 Xác định các stakeholder chính...",
+            "� Đánh giá tình hình tài chính...",
+            "🎯 Phân tích mục tiêu kinh doanh...",
+            "✅ Hoàn thành phân tích bối cảnh"
+        ]
+        
+        industry_messages = [
+            "📊 Khởi động phân tích ngành...",
+            "📈 Nghiên cứu xu hướng thị trường...",
+            "🏆 Phân tích đối thủ cạnh tranh...",
+            "💡 Tìm kiếm cơ hội phát triển...",
+            "⚠️ Đánh giá rủi ro tiềm ẩn...",
+            "🔍 Thu thập market insights...",
+            "✅ Hoàn thành phân tích ngành"
+        ]
+        
+        strategy_messages = [
+            "📋 Bắt đầu thiết kế chiến lược...",
+            "⏰ Xây dựng cấu trúc thời gian...",
+            "🎯 Tạo agenda chi tiết...",
+            "💬 Chuẩn bị talking points...",
+            "❓ Thiết kế câu hỏi thảo luận...",
+            "🚀 Tối ưu hóa flow cuộc họp...",
+            "✅ Hoàn thành chiến lược"
+        ]
+        
+        executive_messages = [
+            "📝 Khởi tạo báo cáo tổng hợp...",
+            "📋 Tổng hợp thông tin từ các agent...",
+            "💼 Tạo executive summary...",
+            "� Thêm charts và visualizations...",
+            "🎨 Format báo cáo chuyên nghiệp...",
+            "✅ Finalize deliverables...",
+            "✅ Hoàn thành báo cáo"
+        ]
+        
+        # Phase 1: Context Analysis (0-25%) - Chậm hơn, thực tế hơn
         main_status.text(f"🔍 Đang phân tích bối cảnh cuộc họp cho {company_name}...")
-        agents_status['context'].text("🔍 Tìm kiếm thông tin công ty...")
         
-        for i in range(25):
-            agents_progress['context'].progress((i + 1) * 4)
-            main_progress.progress(i + 1)
-            time.sleep(0.03)
-        
-        agents_status['context'].text("✅ Hoàn thành phân tích bối cảnh")
+        for i, message in enumerate(context_messages):
+            agents_status['context'].text(message)
+            progress_val = int((i + 1) / len(context_messages) * 100)
+            agents_progress['context'].progress(progress_val)
+            main_progress.progress(int(progress_val * 0.25))
+            time.sleep(0.8)  # Chậm hơn để realistic
         
         # Phase 2: Industry Insights (25-50%)
         main_status.text("📊 Đang thu thập insights ngành...")
-        agents_status['industry'].text("📊 Phân tích xu hướng ngành...")
         
-        for i in range(25):
-            agents_progress['industry'].progress((i + 1) * 4)
-            main_progress.progress(25 + i + 1)
-            time.sleep(0.03)
-            
-        agents_status['industry'].text("✅ Hoàn thành phân tích ngành")
+        for i, message in enumerate(industry_messages):
+            agents_status['industry'].text(message)
+            progress_val = int((i + 1) / len(industry_messages) * 100)
+            agents_progress['industry'].progress(progress_val)
+            main_progress.progress(25 + int(progress_val * 0.25))
+            time.sleep(0.8)
         
         # Phase 3: Strategy (50-75%)
         main_status.text("📋 Đang xây dựng chiến lược cuộc họp...")
-        agents_status['strategy'].text("📋 Tạo agenda và chiến lược...")
         
-        for i in range(25):
-            agents_progress['strategy'].progress((i + 1) * 4)
-            main_progress.progress(50 + i + 1)
-            time.sleep(0.03)
-            
-        agents_status['strategy'].text("✅ Hoàn thành chiến lược")
+        for i, message in enumerate(strategy_messages):
+            agents_status['strategy'].text(message)
+            progress_val = int((i + 1) / len(strategy_messages) * 100)
+            agents_progress['strategy'].progress(progress_val)
+            main_progress.progress(50 + int(progress_val * 0.25))
+            time.sleep(0.8)
         
         # Phase 4: Executive Brief (75-100%)
         main_status.text("📝 Đang tạo báo cáo tổng hợp...")
-        agents_status['executive'].text("📝 Tổng hợp thông tin...")
         
-        for i in range(25):
-            agents_progress['executive'].progress((i + 1) * 4)
-            main_progress.progress(75 + i + 1)
-            time.sleep(0.03)
-            
-        agents_status['executive'].text("✅ Hoàn thành báo cáo")
+        for i, message in enumerate(executive_messages):
+            agents_status['executive'].text(message)
+            progress_val = int((i + 1) / len(executive_messages) * 100)
+            agents_progress['executive'].progress(progress_val)
+            main_progress.progress(75 + int(progress_val * 0.25))
+            time.sleep(0.8)
+        
+        # Final phase với loading animation
         main_status.text("🎉 Hoàn thành! Đang tạo báo cáo cuối cùng...")
         
-        # Execute actual crew
+        # Thêm animation loading cho phần cuối
+        loading_messages = [
+            "🔄 Đang compile kết quả...",
+            "📄 Đang format báo cáo...",
+            "🎨 Đang tối ưu hóa layout...",
+            "✅ Sắp hoàn thành..."
+        ]
+        
+        for i, message in enumerate(loading_messages):
+            main_status.text(message)
+            time.sleep(0.5)
+        
+        # Execute actual crew (chạy thật)
+        main_status.text("⚡ Đang chạy AI Crew...")
         result = crew.kickoff()
         
         main_status.text("✅ Chuẩn bị cuộc họp hoàn tất!")
@@ -303,11 +353,9 @@ def display_fun_facts():
     st.info(selected_fact)
 
 
-def display_agent_details(show_verbose=False):
-    """Hiển thị thông tin chi tiết về các AI agents"""
-    if show_verbose:
-        st.markdown("---")
-        st.markdown("### 🤖 Chi tiết AI Agents")
+def display_agent_details():
+    """Hiển thị thông tin chi tiết về các AI agents với expander"""
+    with st.expander("🤖 Chi tiết AI Agents", expanded=False):
         st.markdown("*Hệ thống sử dụng 4 AI agents chuyên biệt để chuẩn bị cuộc họp một cách toàn diện*")
         
         col1, col2 = st.columns(2)
@@ -342,46 +390,64 @@ def display_agent_details(show_verbose=False):
             - 📊 Bao gồm charts và key takeaways
             """)
         
-        st.markdown("---")
-        st.markdown("#### 🔄 Quy trình làm việc")
-        
-        # Workflow diagram using text
-        workflow_col1, workflow_col2, workflow_col3, workflow_col4 = st.columns(4)
-        
-        with workflow_col1:
-            st.markdown("""
-            **Bước 1** 🔍
+        with st.expander("🔄 Quy trình làm việc chi tiết", expanded=False):
+            # Workflow diagram using text
+            workflow_col1, workflow_col2, workflow_col3, workflow_col4 = st.columns(4)
             
-            Context Analysis
+            with workflow_col1:
+                st.markdown("""
+                **Bước 1** 🔍
+                
+                **Context Analysis**
+                
+                *Thu thập & phân tích dữ liệu*
+                
+                - Nghiên cứu công ty
+                - Tìm tin tức gần đây
+                - Phân tích stakeholders
+                - Đánh giá bối cảnh
+                """)
             
-            *Thu thập & phân tích dữ liệu*
-            """)
-        
-        with workflow_col2:
-            st.markdown("""
-            **Bước 2** 📊
+            with workflow_col2:
+                st.markdown("""
+                **Bước 2** 📊
+                
+                **Industry Research**
+                
+                *Insights & trends*
+                
+                - Xu hướng ngành
+                - Phân tích đối thủ
+                - Cơ hội & rủi ro
+                - Market insights
+                """)
             
-            Industry Research
+            with workflow_col3:
+                st.markdown("""
+                **Bước 3** 📋
+                
+                **Strategy Design**
+                
+                *Agenda & structure*
+                
+                - Thiết kế agenda
+                - Cấu trúc thời gian
+                - Talking points
+                - Q&A preparation
+                """)
             
-            *Insights & trends*
-            """)
-        
-        with workflow_col3:
-            st.markdown("""
-            **Bước 3** 📋
-            
-            Strategy Design
-            
-            *Agenda & structure*
-            """)
-        
-        with workflow_col4:
-            st.markdown("""
-            **Bước 4** 📝
-            
-            Report Creation
-            
-            *Final deliverable*
-            """)
+            with workflow_col4:
+                st.markdown("""
+                **Bước 4** 📝
+                
+                **Report Creation**
+                
+                *Final deliverable*
+                
+                - Tổng hợp thông tin
+                - Executive summary
+                - Action items
+                - Next steps
+                """)
         
         st.info("💡 **Pro tip:** Bật chế độ verbose để xem chi tiết quá trình làm việc của từng agent")

@@ -24,6 +24,8 @@ def create_tasks(agents, meeting_data):
     # Task 1: Phân tích bối cảnh
     context_analysis_task = Task(
         description=f"""
+        QUAN TRỌNG: TẤT CẢ TRẢ LỜI HOÀN TOÀN BẰNG TIẾNG VIỆT
+        
         Phân tích bối cảnh cuộc họp với {company_name}, xem xét:
         1. Mục tiêu cuộc họp: {meeting_objective}
         2. Người tham dự: {attendees}
@@ -45,6 +47,8 @@ def create_tasks(agents, meeting_data):
     # Task 2: Phân tích ngành
     industry_analysis_task = Task(
         description=f"""
+        QUAN TRỌNG: TẤT CẢ TRẢ LỜI HOÀN TOÀN BẰNG TIẾNG VIỆT
+        
         Dựa trên phân tích bối cảnh cho {company_name} và mục tiêu cuộc họp: {meeting_objective}, cung cấp phân tích ngành chuyên sâu:
         1. Xác định các xu hướng và phát triển chính trong ngành
         2. Phân tích bối cảnh cạnh tranh
@@ -61,6 +65,8 @@ def create_tasks(agents, meeting_data):
     # Task 3: Phát triển chiến lược
     strategy_development_task = Task(
         description=f"""
+        QUAN TRỌNG: TẤT CẢ TRẢ LỜI HOÀN TOÀN BẰNG TIẾNG VIỆT
+        
         Sử dụng phân tích bối cảnh và thông tin chi tiết về ngành, phát triển chiến lược cuộc họp tùy chỉnh và chương trình chi tiết cho cuộc họp {meeting_duration} phút với {company_name}. Bao gồm:
         1. Một chương trình giới hạn thời gian với các mục tiêu rõ ràng cho từng phần
         2. Các điểm nói chuyện chính cho từng mục trong chương trình
@@ -78,6 +84,8 @@ def create_tasks(agents, meeting_data):
     # Task 4: Tóm tắt điều hành
     executive_brief_task = Task(
         description=f"""
+        QUAN TRỌNG: TẤT CẢ TRẢ LỜI HOÀN TOÀN BẰNG TIẾNG VIỆT
+        
         Tổng hợp tất cả thông tin đã thu thập thành một bản tóm tắt điều hành toàn diện nhưng ngắn gọn cho cuộc họp với {company_name}. Tạo các thành phần sau:
 
         1. Một bản tóm tắt điều hành chi tiết một trang, bao gồm:

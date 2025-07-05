@@ -76,9 +76,11 @@ if Config.validate_api_keys():
 
         # Chạy crew khi người dùng nhấp vào nút
         if st.button("🚀 Chuẩn bị cuộc họp", disabled=not all_fields_filled, type="primary"):
-            # Hiển thị chi tiết agents nếu verbose
             if show_verbose:
-                display_agent_details(show_verbose)
+                st.info("🔍 Chế độ verbose được bật - sẽ hiển thị log chi tiết")
+            
+            # Hiển thị thông tin agents (có thể đóng/mở)
+            display_agent_details()
             
             # Hiển thị fun facts
             display_fun_facts()
