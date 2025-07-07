@@ -65,3 +65,4 @@ def create_agents(llm):
         'strategy_formulator': strategy_formulator,
         'executive_briefing_creator': executive_briefing_creator
     }
+
